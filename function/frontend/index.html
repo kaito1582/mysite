@@ -2,428 +2,76 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Instant English</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #0d0f14;
-      --surface: #151820;
-      --surface2: #1c2030;
-      --border: #252a38;
-      --accent: #5b8cff;
-      --accent2: #a78bfa;
-      --success: #34d399;
-      --error: #f87171;
-      --text: #e8eaf0;
-      --muted: #6b7280;
-      --card-glow: rgba(91, 140, 255, 0.08);
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
-
-    /* Background grid */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(91,140,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(91,140,255,0.03) 1px, transparent 1px);
-      background-size: 48px 48px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Glow orb */
-    body::after {
-      content: '';
-      position: fixed;
-      top: -200px;
-      right: -200px;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(91,140,255,0.12) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ── HEADER ── */
-    header {
-      position: relative;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 40px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(13,15,20,0.8);
-      backdrop-filter: blur(12px);
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo-icon {
-      width: 32px;
-      height: 32px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-    }
-
-    .logo-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    nav {
-      display: flex;
-      gap: 8px;
-    }
-
-    nav a {
-      color: var(--muted);
-      text-decoration: none;
-      font-size: 0.875rem;
-      font-weight: 500;
-      padding: 6px 16px;
-      border-radius: 8px;
-      transition: all 0.2s;
-    }
-
-    nav a:hover, nav a.active {
-      color: var(--text);
-      background: var(--surface2);
-    }
-
-    nav a.active {
-      color: var(--accent);
-    }
-
-    /* ── MAIN ── */
-    main {
-      position: relative;
-      z-index: 10;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 60px 24px;
-      gap: 32px;
-    }
-
-    /* Stats bar */
-    .stats-bar {
-      display: flex;
-      gap: 24px;
-      animation: fadeUp 0.5s ease both;
-    }
-
-    .stat {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 2px;
-    }
-
-    .stat-value {
-      font-family: 'DM Mono', monospace;
-      font-size: 1.5rem;
-      font-weight: 500;
-      color: var(--accent);
-    }
-
-    .stat-label {
-      font-size: 0.7rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .stat-divider {
-      width: 1px;
-      height: 40px;
-      background: var(--border);
-      align-self: center;
-    }
-
-    /* ── QUESTION CARD ── */
-    .question-card {
-      width: 100%;
-      max-width: 680px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 48px;
-      position: relative;
-      overflow: hidden;
-      animation: fadeUp 0.5s 0.1s ease both;
-      box-shadow: 0 0 60px var(--card-glow);
-    }
-
-    .question-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-    }
-
-    .question-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(91,140,255,0.1);
-      border: 1px solid rgba(91,140,255,0.2);
-      color: var(--accent);
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 4px 12px;
-      border-radius: 99px;
-      margin-bottom: 24px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .question-label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 12px;
-    }
-
-    .question-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      line-height: 1.4;
-      color: var(--text);
-      margin-bottom: 36px;
-      min-height: 56px;
-    }
-
-    /* ── INPUT AREA ── */
-    .input-wrapper {
-      position: relative;
-    }
-
-    .input-wrapper input {
-      width: 100%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 56px 16px 20px;
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 1rem;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .input-wrapper input::placeholder {
-      color: var(--muted);
-    }
-
-    .input-wrapper input:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(91,140,255,0.1);
-    }
-
-    .input-wrapper input.correct {
-      border-color: var(--success);
-      box-shadow: 0 0 0 3px rgba(52,211,153,0.1);
-    }
-
-    .input-wrapper input.incorrect {
-      border-color: var(--error);
-      box-shadow: 0 0 0 3px rgba(248,113,113,0.1);
-    }
-
-    .speak-btn {
-      position: absolute;
-      right: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      font-size: 1.1rem;
-      padding: 4px;
-      transition: color 0.2s;
-    }
-
-    .speak-btn:hover { color: var(--accent); }
-
-    /* ── FEEDBACK ── */
-    .feedback {
-      margin-top: 16px;
-      padding: 14px 18px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-      display: none;
-    }
-
-    .feedback.correct {
-      background: rgba(52,211,153,0.1);
-      border: 1px solid rgba(52,211,153,0.2);
-      color: var(--success);
-      display: block;
-    }
-
-    .feedback.incorrect {
-      background: rgba(248,113,113,0.1);
-      border: 1px solid rgba(248,113,113,0.2);
-      color: var(--error);
-      display: block;
-    }
-
-    .answer-reveal {
-      margin-top: 8px;
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.95rem;
-    }
-
-    /* ── BUTTONS ── */
-    .btn-row {
-      display: flex;
-      gap: 12px;
-      margin-top: 24px;
-    }
-
-    .btn {
-      flex: 1;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: white;
-    }
-
-    .btn-primary:hover {
-      opacity: 0.9;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 24px rgba(91,140,255,0.3);
-    }
-
-    .btn-secondary {
-      background: var(--surface2);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-secondary:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* ── LEVEL SELECTOR ── */
-    .level-selector {
-      display: flex;
-      gap: 8px;
-      animation: fadeUp 0.5s 0.2s ease both;
-    }
-
-    .level-btn {
-      padding: 6px 20px;
-      border-radius: 99px;
-      font-size: 0.8rem;
-      font-weight: 500;
-      cursor: pointer;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--muted);
-      transition: all 0.2s;
-    }
-
-    .level-btn:hover {
-      color: var(--text);
-      border-color: var(--accent);
-    }
-
-    .level-btn.active {
-      background: rgba(91,140,255,0.15);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      position: relative;
-      z-index: 10;
-      text-align: center;
-      padding: 20px;
-      color: var(--muted);
-      font-size: 0.75rem;
-      border-top: 1px solid var(--border);
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── LOADING STATE ── */
-    .skeleton {
-      background: linear-gradient(90deg, var(--surface2) 25%, var(--border) 50%, var(--surface2) 75%);
-      background-size: 200% 100%;
-      animation: shimmer 1.4s infinite;
-      border-radius: 8px;
-      height: 1em;
-    }
-
-    @keyframes shimmer {
-      0%   { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-  </style>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <div class="logo">
-      <div class="logo-icon">⚡</div>
-      <span class="logo-text">Instant English</span>
+  <!-- ── Sidebar overlay (click to close) ───────────────── -->
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+  <!-- ── Sidebar ────────────────────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-icon">⚡</div>
+        <span class="sidebar-logo-text">Instant English</span>
+      </div>
+      <button class="sidebar-close" onclick="closeMenu()" aria-label="メニューを閉じる">✕</button>
     </div>
-    <nav>
-      <a href="#" class="active">練習</a>
-      <a href="#">履歴</a>
-      <a href="#">設定</a>
+
+    <nav class="sidebar-nav">
+      <p class="sidebar-section">メニュー</p>
+
+      <button class="nav-item active" onclick="navigate(this, 'practice')">
+        <span class="nav-item-icon">📝</span>
+        練習
+        <span class="nav-item-badge">Now</span>
+      </button>
+
+      <button class="nav-item" onclick="navigate(this, 'history')">
+        <span class="nav-item-icon">📖</span>
+        履歴
+      </button>
+
+      <button class="nav-item" onclick="navigate(this, 'ranking')">
+        <span class="nav-item-icon">🏆</span>
+        スコアランキング
+      </button>
+
+      <p class="sidebar-section">その他</p>
+
+      <button class="nav-item" onclick="navigate(this, 'settings')">
+        <span class="nav-item-icon">⚙️</span>
+        設定
+      </button>
     </nav>
+
+    <p class="sidebar-footer">Instant English v1.0</p>
+  </aside>
+
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <header>
+    <div class="header-left">
+      <button class="hamburger" onclick="toggleMenu()" aria-label="メニューを開く">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="logo">
+        <div class="logo-icon">⚡</div>
+        <span class="logo-text">Instant English</span>
+      </div>
+    </div>
+    <span class="page-title" id="page-title">練習</span>
   </header>
 
-  <!-- MAIN -->
+  <!-- ── Main ───────────────────────────────────────────── -->
   <main>
 
     <!-- Stats -->
@@ -444,21 +92,18 @@
       </div>
     </div>
 
-    <!-- Level Selector -->
+    <!-- Level selector -->
     <div class="level-selector">
       <button class="level-btn active" onclick="setLevel(this, 'beginner')">初級</button>
-      <button class="level-btn" onclick="setLevel(this, 'intermediate')">中級</button>
-      <button class="level-btn" onclick="setLevel(this, 'advanced')">上級</button>
+      <button class="level-btn"        onclick="setLevel(this, 'intermediate')">中級</button>
+      <button class="level-btn"        onclick="setLevel(this, 'advanced')">上級</button>
     </div>
 
-    <!-- Question Card -->
+    <!-- Question card -->
     <div class="question-card">
-      <div class="question-badge">🇯🇵 → 🇬🇧 瞬間英作文</div>
-
-      <div class="question-label">次の日本語を英語にしてください</div>
-      <div class="question-text" id="question">
-        問題を読み込んでいます...
-      </div>
+      <span class="question-badge">🇯🇵 → 🇬🇧 瞬間英作文</span>
+      <p class="question-label">次の日本語を英語にしてください</p>
+      <p class="question-text" id="question">問題を読み込んでいます...</p>
 
       <div class="input-wrapper">
         <input
@@ -466,114 +111,60 @@
           id="answer-input"
           placeholder="英語で入力してください..."
           onkeydown="handleKey(event)"
+          autocomplete="off"
         />
-        <button class="speak-btn" onclick="speak()" title="読み上げ">🔊</button>
+        <button class="speak-btn" onclick="speak()" title="正解を読み上げる">🔊</button>
       </div>
 
       <div class="feedback" id="feedback"></div>
 
       <div class="btn-row">
         <button class="btn btn-secondary" onclick="skipQuestion()">スキップ</button>
-        <button class="btn btn-primary" onclick="checkAnswer()">答え合わせ →</button>
+        <button class="btn btn-primary"   onclick="checkAnswer()">答え合わせ →</button>
       </div>
     </div>
 
   </main>
 
-  <!-- FOOTER -->
-  <footer>
-    Instant English — AI powered by Claude
-  </footer>
+  <!-- ── Footer ─────────────────────────────────────────── -->
+  <footer>Instant English — AI powered by Claude</footer>
 
+  <!-- ── Scripts ────────────────────────────────────────── -->
+  <script src="app.js"></script>
   <script>
-    // ── State ──
-    let score = 0, streak = 0, total = 0;
-    let currentAnswer = '';
-    let level = 'beginner';
+    // ── Sidebar ──────────────────────────────────────────
+    function toggleMenu() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
+    }
 
-    // ── Dummy question (API連携前のプレースホルダー) ──
-    const demoQuestions = {
-      beginner: [
-        { ja: '私は毎朝コーヒーを飲みます。', en: 'I drink coffee every morning.' },
-        { ja: '彼女は学校の先生です。', en: 'She is a school teacher.' },
-        { ja: '今日は天気がいいですね。', en: 'The weather is nice today.' },
-      ],
-      intermediate: [
-        { ja: '彼は昨日までにレポートを提出しなければなりませんでした。', en: 'He had to submit the report by yesterday.' },
-        { ja: 'もっと早く起きていれば電車に乗れたのに。', en: 'If I had woken up earlier, I could have caught the train.' },
-      ],
-      advanced: [
-        { ja: '彼女がその提案を断るとは思ってもみなかった。', en: 'It never occurred to me that she would turn down the proposal.' },
-        { ja: '経済の不安定さが消費者の購買意欲に影響を与えている。', en: 'Economic instability is affecting consumer spending motivation.' },
-      ]
+    function closeMenu() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('overlay').classList.remove('show');
+    }
+
+    // ── Navigation ───────────────────────────────────────
+    const PAGE_NAMES = {
+      practice: '練習',
+      history:  '履歴',
+      ranking:  'スコアランキング',
+      settings: '設定',
     };
 
-    let qIndex = 0;
+    function navigate(btn, page) {
+      // ページタイトルを更新
+      document.getElementById('page-title').textContent = PAGE_NAMES[page] ?? page;
 
-    function loadQuestion() {
-      const qs = demoQuestions[level];
-      const q = qs[qIndex % qs.length];
-      currentAnswer = q.en;
-      document.getElementById('question').textContent = q.ja;
-      document.getElementById('answer-input').value = '';
-      document.getElementById('answer-input').className = '';
-      document.getElementById('feedback').className = 'feedback';
-      document.getElementById('feedback').innerHTML = '';
-    }
-
-    function setLevel(btn, lv) {
-      document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+      // アクティブ状態を更新
+      document.querySelectorAll('.nav-item').forEach((el) => el.classList.remove('active'));
       btn.classList.add('active');
-      level = lv;
-      qIndex = 0;
-      loadQuestion();
+
+      closeMenu();
+
+      // TODO: ページ切り替えロジックをここに追加
+      console.log('Navigate to:', page);
     }
-
-    function checkAnswer() {
-      const input = document.getElementById('answer-input');
-      const feedback = document.getElementById('feedback');
-      const userAnswer = input.value.trim().toLowerCase();
-      const correct = currentAnswer.toLowerCase();
-
-      total++;
-      document.getElementById('total').textContent = total;
-
-      if (userAnswer === correct) {
-        score++;
-        streak++;
-        input.classList.add('correct');
-        feedback.className = 'feedback correct';
-        feedback.innerHTML = '✅ 正解！';
-        document.getElementById('score').textContent = score;
-        document.getElementById('streak').textContent = streak;
-        setTimeout(() => { qIndex++; loadQuestion(); }, 1200);
-      } else {
-        streak = 0;
-        input.classList.add('incorrect');
-        feedback.className = 'feedback incorrect';
-        feedback.innerHTML = `❌ 不正解<div class="answer-reveal">正解: ${currentAnswer}</div>`;
-        document.getElementById('streak').textContent = streak;
-      }
-    }
-
-    function skipQuestion() {
-      qIndex++;
-      loadQuestion();
-    }
-
-    function handleKey(e) {
-      if (e.key === 'Enter') checkAnswer();
-    }
-
-    function speak() {
-      if (!currentAnswer) return;
-      const utter = new SpeechSynthesisUtterance(currentAnswer);
-      utter.lang = 'en-US';
-      speechSynthesis.speak(utter);
-    }
-
-    // ── Init ──
-    loadQuestion();
   </script>
+
 </body>
 </html>
